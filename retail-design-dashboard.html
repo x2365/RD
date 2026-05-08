@@ -1,72 +1,1466 @@
-RETAILDESIGN
-OS v1.0 · Portfolio
-ОБЗОР
-◈
-Дашборд
-⬡
-Воронка задач
-12
-▤
-Таймлайн
-ФИНАНСЫ
-◎
-Бюджеты
-◇
-Оплаты / КП
-3
-ЛОГИСТИКА
-◉
-Торговые точки
-7
-СИСТЕМА
-✓
-Согласования
-4
-◈
-Бренды
-＋
-Новое ТЗ
-АК
-А. Козлова
-Менеджер
-Дашборд
-RU
-EN
-Фильтр
-⬡
-＋
-Новое ТЗ
-АКТИВНЫХ ЗАДАЧ
-12
-из 15 брендов
-↑ +2 за месяц
-СРОК < 14 ДНЕЙ
-4
-требуют внимания
-⚠ 2 критичных
-ЗАВЕРШЕНО Q2
-7
-лончей в срок
-↑ 100% on-time
-БЮДЖЕТ Q2
-₽18.4М
-из ₽24М плана
-76% освоено
-ТТ БЕЗ ПОДТВ.
-23
-из 187 точек
-↓ нужна проверка
-АКТИВНЫЕ ЗАДАЧИ
-12
-Все
-Срочные
-Согласование
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>RetailDesign OS</title>
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@300;400;600;700&family=Geologica:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0a0b0f;
+  --surface: #12141a;
+  --surface2: #1a1d26;
+  --surface3: #222535;
+  --border: #2a2d3e;
+  --accent: #5b6af0;
+  --accent2: #8b5cf6;
+  --accent3: #06d6a0;
+  --warn: #f59e0b;
+  --danger: #ef4444;
+  --text: #e8eaf2;
+  --text2: #8b90a8;
+  --text3: #5a5f78;
+  --sidebar-w: 240px;
+  --topbar-h: 56px;
+  --bottomnav-h: 64px;
+}
+* { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+html, body { height:100%; overflow:hidden; }
+body { font-family:'Geologica',sans-serif; background:var(--bg); color:var(--text); }
 
-ОЖИДАЮТ РЕШЕНИЯ
-4
+/* ── LAYOUT ──────────────────────────────────── */
+.app { display:flex; height:100vh; height:100dvh; }
 
-БЮДЖЕТ ПО ГРУППАМ
+/* ── SIDEBAR (desktop) ───────────────────────── */
+.sidebar {
+  width:var(--sidebar-w);
+  flex-shrink:0;
+  background:var(--surface);
+  border-right:1px solid var(--border);
+  display:flex;
+  flex-direction:column;
+  padding:24px 0;
+  z-index:50;
+  transition:transform 0.25s cubic-bezier(.4,0,.2,1);
+  overflow-y:auto;
+}
+.logo { padding:0 20px 24px; border-bottom:1px solid var(--border); margin-bottom:16px; }
+.logo-mark { font-family:'Unbounded',sans-serif; font-size:11px; font-weight:700; letter-spacing:.15em; color:var(--accent); text-transform:uppercase; }
+.logo-sub { font-size:10px; color:var(--text3); letter-spacing:.08em; margin-top:2px; }
+.nav-section { padding:0 12px; margin-bottom:2px; }
+.nav-label { font-size:9px; letter-spacing:.12em; color:var(--text3); text-transform:uppercase; padding:0 8px; margin-bottom:5px; margin-top:14px; }
+.nav-item {
+  display:flex; align-items:center; gap:10px;
+  padding:9px 12px; border-radius:8px; cursor:pointer;
+  font-size:13px; color:var(--text2);
+  transition:all .15s; margin-bottom:1px;
+  position:relative;
+}
+.nav-item:hover { background:var(--surface2); color:var(--text); }
+.nav-item.active { background:rgba(91,106,240,.15); color:var(--accent); }
+.nav-icon { font-size:16px; width:20px; text-align:center; flex-shrink:0; }
+.nav-text { white-space:nowrap; overflow:hidden; }
+.nav-badge {
+  margin-left:auto; flex-shrink:0;
+  background:var(--accent); color:#fff;
+  font-size:9px; padding:2px 6px; border-radius:10px; font-weight:600;
+}
+.nav-badge.warn { background:var(--warn); }
+.nav-badge.danger { background:var(--danger); }
+.sidebar-footer { margin-top:auto; padding:16px 20px; border-top:1px solid var(--border); }
+.user-card { display:flex; align-items:center; gap:10px; }
+.user-avatar {
+  width:32px; height:32px; border-radius:8px; flex-shrink:0;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));
+  display:flex; align-items:center; justify-content:center;
+  font-size:12px; font-weight:600;
+}
+.user-name { font-size:12px; font-weight:500; }
+.user-role { font-size:10px; color:var(--text3); }
 
-СТАТУС ТОРГОВЫХ ТОЧЕК
-Выгрузить из АХ
+/* ── MAIN ────────────────────────────────────── */
+.main { flex:1; display:flex; flex-direction:column; overflow:hidden; min-width:0; }
 
+/* ── TOPBAR ──────────────────────────────────── */
+.topbar {
+  background:var(--surface); border-bottom:1px solid var(--border);
+  padding:0 20px; height:var(--topbar-h);
+  display:flex; align-items:center; gap:12px;
+  flex-shrink:0; z-index:10;
+}
+.topbar-hamburger {
+  display:none; background:none; border:none;
+  color:var(--text2); font-size:20px; cursor:pointer; padding:4px;
+}
+.topbar-title { font-family:'Unbounded',sans-serif; font-size:12px; font-weight:600; white-space:nowrap; }
+.topbar-sep { color:var(--text3); font-size:14px; }
+.topbar-sub { color:var(--text2); font-size:11px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.topbar-actions { margin-left:auto; display:flex; gap:8px; align-items:center; flex-shrink:0; }
+
+/* Lang toggle */
+.lang-toggle {
+  display:flex; background:var(--surface2); border:1px solid var(--border);
+  border-radius:7px; overflow:hidden;
+}
+.lang-btn {
+  padding:5px 10px; font-size:11px; cursor:pointer; border:none;
+  background:none; color:var(--text3); font-family:'Geologica',sans-serif;
+  font-weight:600; transition:all .15s; letter-spacing:.05em;
+}
+.lang-btn.active { background:var(--accent); color:#fff; }
+
+.btn {
+  padding:6px 12px; border-radius:7px; font-size:11px;
+  font-family:'Geologica',sans-serif; cursor:pointer; border:none;
+  font-weight:500; transition:all .15s; white-space:nowrap;
+}
+.btn-ghost { background:var(--surface2); color:var(--text2); }
+.btn-ghost:hover { background:var(--surface3); color:var(--text); }
+.btn-primary { background:var(--accent); color:#fff; }
+.btn-primary:hover { opacity:.85; }
+.btn-icon { display:none; width:36px; height:36px; padding:0; align-items:center; justify-content:center; font-size:18px; }
+
+/* ── CONTENT AREA ────────────────────────────── */
+.content-area { flex:1; overflow-y:auto; padding:20px; }
+
+/* ── VIEWS ───────────────────────────────────── */
+.view { display:none; }
+.view.active { display:block; }
+
+/* ── KPI ROW ─────────────────────────────────── */
+.kpi-row { display:grid; grid-template-columns:repeat(5,1fr); gap:12px; margin-bottom:20px; }
+.kpi-card {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:12px; padding:16px; position:relative; overflow:hidden;
+}
+.kpi-card::before { content:''; position:absolute; top:0;left:0;right:0; height:2px; }
+.kpi-card.blue::before { background:var(--accent); }
+.kpi-card.green::before { background:var(--accent3); }
+.kpi-card.amber::before { background:var(--warn); }
+.kpi-card.red::before { background:var(--danger); }
+.kpi-card.purple::before { background:var(--accent2); }
+.kpi-label { font-size:9px; color:var(--text3); letter-spacing:.08em; text-transform:uppercase; margin-bottom:6px; }
+.kpi-value { font-family:'Unbounded',sans-serif; font-size:20px; font-weight:600; line-height:1.1; }
+.kpi-sub { font-size:10px; color:var(--text2); margin-top:4px; }
+.kpi-delta { font-size:10px; margin-top:5px; }
+.kpi-delta.up { color:var(--accent3); }
+.kpi-delta.down { color:var(--danger); }
+
+/* ── PANELS ──────────────────────────────────── */
+.panel { background:var(--surface); border:1px solid var(--border); border-radius:14px; overflow:hidden; }
+.panel-header {
+  padding:14px 18px; border-bottom:1px solid var(--border);
+  display:flex; align-items:center; gap:10px; flex-wrap:wrap; gap:8px;
+}
+.panel-title { font-family:'Unbounded',sans-serif; font-size:10px; font-weight:600; letter-spacing:.05em; }
+.panel-count { background:var(--surface3); color:var(--text2); font-size:10px; padding:2px 7px; border-radius:10px; }
+.panel-body { padding:14px 18px; }
+.panel-actions { margin-left:auto; display:flex; gap:6px; flex-wrap:wrap; }
+
+/* ── GRID LAYOUTS ────────────────────────────── */
+.grid-main { display:grid; grid-template-columns:1fr 320px; gap:16px; margin-bottom:16px; }
+.grid-side { display:flex; flex-direction:column; gap:14px; }
+
+/* ── PIPELINE TABS ───────────────────────────── */
+.pipeline-tabs { display:flex; gap:3px; padding:3px; background:var(--surface2); border-radius:8px; }
+.ptab { flex:1; padding:5px 8px; border-radius:6px; font-size:10px; text-align:center; cursor:pointer; color:var(--text2); transition:all .15s; white-space:nowrap; }
+.ptab.active { background:var(--surface3); color:var(--text); }
+
+/* ── TASK CARD ───────────────────────────────── */
+.task-list { display:flex; flex-direction:column; gap:10px; }
+.task-card {
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:10px; padding:13px 15px; cursor:pointer;
+  transition:all .15s; animation:fadeUp .25s ease both;
+}
+.task-card:hover { border-color:var(--accent); background:var(--surface3); }
+.task-card:active { transform:scale(.99); }
+.task-brand-dot { width:7px; height:7px; border-radius:50%; margin-top:5px; flex-shrink:0; }
+.task-name { font-size:13px; font-weight:500; }
+.stage-pipeline { display:flex; align-items:center; gap:2px; margin-top:8px; }
+.stage-dot { height:3px; flex:1; border-radius:2px; background:var(--surface3); }
+.stage-dot.done { background:var(--accent3); }
+.stage-dot.active { background:var(--accent); }
+.task-stage { display:inline-flex; align-items:center; gap:4px; font-size:9px; padding:2px 7px; border-radius:20px; font-weight:500; }
+.stage-1 { background:rgba(91,106,240,.15); color:var(--accent); }
+.stage-2 { background:rgba(139,92,246,.15); color:var(--accent2); }
+.stage-3 { background:rgba(6,214,160,.15); color:var(--accent3); }
+.stage-4 { background:rgba(245,158,11,.15); color:var(--warn); }
+.stage-5 { background:rgba(239,68,68,.12); color:var(--danger); }
+.stage-6 { background:rgba(6,214,160,.2); color:var(--accent3); }
+.task-deadline { font-size:10px; color:var(--text2); }
+.task-deadline.urgent { color:var(--danger); }
+.task-deadline.warn { color:var(--warn); }
+
+/* ── PROGRESS ────────────────────────────────── */
+.progress-wrap { margin-top:9px; }
+.progress-label { display:flex; justify-content:space-between; font-size:9px; color:var(--text3); margin-bottom:3px; }
+.progress-bar { height:3px; background:var(--surface3); border-radius:2px; overflow:hidden; }
+.progress-fill { height:100%; border-radius:2px; transition:width .4s ease; }
+.fill-blue { background:var(--accent); }
+.fill-green { background:var(--accent3); }
+.fill-amber { background:var(--warn); }
+.fill-red { background:var(--danger); }
+
+/* ── APPROVALS ───────────────────────────────── */
+.approval-item { display:flex; align-items:center; gap:10px; padding:11px 0; border-bottom:1px solid var(--border); }
+.approval-item:last-child { border-bottom:none; }
+.approval-avatar { width:32px; height:32px; border-radius:8px; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:600; flex-shrink:0; }
+.approval-info { flex:1; min-width:0; }
+.approval-name { font-size:12px; font-weight:500; }
+.approval-task { font-size:10px; color:var(--text3); margin-top:1px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.approval-actions { display:flex; gap:5px; flex-shrink:0; }
+.btn-approve { padding:4px 9px; background:rgba(6,214,160,.15); color:var(--accent3); border:1px solid rgba(6,214,160,.25); border-radius:6px; font-size:10px; cursor:pointer; transition:all .15s; }
+.btn-approve:hover { background:rgba(6,214,160,.25); }
+.btn-reject { padding:4px 9px; background:rgba(239,68,68,.1); color:var(--danger); border:1px solid rgba(239,68,68,.2); border-radius:6px; font-size:10px; cursor:pointer; }
+
+/* ── BUDGET ──────────────────────────────────── */
+.budget-group { margin-bottom:16px; }
+.budget-group-header { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.budget-group-dot { width:10px; height:10px; border-radius:3px; flex-shrink:0; }
+.budget-group-name { font-size:12px; font-weight:500; }
+.budget-group-total { margin-left:auto; font-size:10px; color:var(--text2); }
+.budget-bar-wrap { background:var(--surface2); border-radius:6px; height:7px; overflow:hidden; display:flex; margin-bottom:5px; }
+.budget-bar-seg { height:100%; transition:width .4s; }
+
+/* ── TT TABLE ────────────────────────────────── */
+.tt-table { width:100%; border-collapse:collapse; }
+.tt-table th { font-size:9px; letter-spacing:.1em; color:var(--text3); text-transform:uppercase; padding:7px 10px; text-align:left; border-bottom:1px solid var(--border); white-space:nowrap; }
+.tt-table td { padding:9px 10px; font-size:12px; border-bottom:1px solid var(--border); }
+.tt-table tr:last-child td { border-bottom:none; }
+.tt-status { display:inline-flex; align-items:center; gap:3px; font-size:10px; padding:2px 7px; border-radius:10px; font-weight:500; white-space:nowrap; }
+.tt-ok { background:rgba(6,214,160,.15); color:var(--accent3); }
+.tt-partial { background:rgba(245,158,11,.15); color:var(--warn); }
+.tt-missing { background:rgba(239,68,68,.12); color:var(--danger); }
+.tt-waiting { background:var(--surface3); color:var(--text3); }
+
+/* ── BADGE ───────────────────────────────────── */
+.badge { display:inline-flex; align-items:center; gap:3px; font-size:9px; padding:2px 7px; border-radius:20px; font-weight:500; white-space:nowrap; }
+.badge-blue { background:rgba(91,106,240,.15); color:var(--accent); }
+.badge-green { background:rgba(6,214,160,.15); color:var(--accent3); }
+.badge-amber { background:rgba(245,158,11,.15); color:var(--warn); }
+.badge-red { background:rgba(239,68,68,.12); color:var(--danger); }
+.badge-gray { background:var(--surface3); color:var(--text3); }
+
+/* ── GANTT ───────────────────────────────────── */
+.gantt-row { display:flex; align-items:center; margin-bottom:8px; }
+.gantt-label { width:120px; font-size:11px; color:var(--text2); flex-shrink:0; padding-right:10px; line-height:1.3; }
+.gantt-track { flex:1; height:18px; background:var(--surface2); border-radius:4px; overflow:hidden; position:relative; }
+.gantt-bar { position:absolute; height:100%; border-radius:4px; display:flex; align-items:center; padding:0 5px; font-size:9px; font-weight:500; white-space:nowrap; overflow:hidden; }
+.gantt-today { position:absolute; top:0; bottom:0; width:1px; background:var(--danger); z-index:2; }
+
+/* ── KANBAN ──────────────────────────────────── */
+.kanban-board { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+
+/* ── MODAL ───────────────────────────────────── */
+.modal-overlay {
+  position:fixed; inset:0; background:rgba(0,0,0,.75);
+  backdrop-filter:blur(4px); z-index:200;
+  display:none; align-items:center; justify-content:center; padding:16px;
+}
+.modal-overlay.open { display:flex; }
+.modal {
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:16px; width:100%; max-width:660px;
+  max-height:90dvh; overflow-y:auto; padding:24px;
+  animation:modalIn .2s ease;
+}
+.modal-header { display:flex; align-items:flex-start; gap:12px; margin-bottom:20px; }
+.modal-title { font-family:'Unbounded',sans-serif; font-size:13px; font-weight:600; }
+.modal-sub { font-size:11px; color:var(--text2); margin-top:3px; }
+.modal-close { margin-left:auto; width:28px; height:28px; border-radius:6px; background:var(--surface2); border:none; color:var(--text2); cursor:pointer; font-size:16px; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+.detail-stages { display:flex; gap:0; margin-bottom:20px; background:var(--surface2); border-radius:10px; padding:3px; overflow-x:auto; }
+.detail-stage { flex:0 0 auto; min-width:60px; text-align:center; padding:7px 4px; border-radius:7px; font-size:9px; color:var(--text3); transition:all .15s; line-height:1.4; }
+.detail-stage.done { background:rgba(6,214,160,.15); color:var(--accent3); }
+.detail-stage.active { background:rgba(91,106,240,.2); color:var(--accent); }
+.detail-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:18px; }
+.detail-field-label { font-size:9px; color:var(--text3); letter-spacing:.06em; text-transform:uppercase; margin-bottom:3px; }
+.detail-field-value { font-size:12px; font-weight:500; }
+.detail-section-title { font-family:'Unbounded',sans-serif; font-size:9px; letter-spacing:.08em; color:var(--text3); text-transform:uppercase; margin-bottom:10px; margin-top:18px; }
+.team-chips { display:flex; gap:7px; flex-wrap:wrap; }
+.team-chip { display:flex; align-items:center; gap:5px; background:var(--surface2); border:1px solid var(--border); border-radius:20px; padding:4px 10px; font-size:11px; }
+.chip-dot { width:6px; height:6px; border-radius:50%; }
+.fin-row { display:flex; align-items:center; padding:7px 0; border-bottom:1px solid var(--border); font-size:12px; }
+.fin-row:last-child { border-bottom:none; }
+.fin-label { color:var(--text2); flex:1; }
+.fin-val { font-weight:500; }
+.fin-val.green { color:var(--accent3); }
+.fin-val.amber { color:var(--warn); }
+.fin-val.mono { font-family:monospace; font-size:11px; }
+
+/* ── FORM ────────────────────────────────────── */
+.form-row { margin-bottom:14px; }
+.form-label { font-size:11px; color:var(--text2); margin-bottom:5px; display:block; }
+.form-input { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:13px; color:var(--text); font-family:'Geologica',sans-serif; outline:none; transition:border-color .15s; }
+.form-input:focus { border-color:var(--accent); }
+.form-select { width:100%; background:var(--surface2); border:1px solid var(--border); border-radius:8px; padding:9px 12px; font-size:13px; color:var(--text); font-family:'Geologica',sans-serif; outline:none; cursor:pointer; }
+.form-grid2 { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+.upload-box { border:1px dashed var(--border); border-radius:10px; padding:16px; text-align:center; cursor:pointer; transition:all .15s; color:var(--text3); font-size:12px; }
+.upload-box:hover { border-color:var(--accent); color:var(--accent); }
+
+/* ── SIDEBAR OVERLAY (mobile) ────────────────── */
+.sidebar-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.6); z-index:40; }
+.sidebar-overlay.open { display:block; }
+
+/* ── BOTTOM NAV (mobile) ─────────────────────── */
+.bottom-nav {
+  display:none;
+  position:fixed; bottom:0; left:0; right:0;
+  height:var(--bottomnav-h);
+  background:var(--surface); border-top:1px solid var(--border);
+  z-index:30; padding:0 4px;
+  align-items:center;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.bnav-item {
+  flex:1; display:flex; flex-direction:column; align-items:center;
+  gap:3px; cursor:pointer; padding:8px 4px;
+  color:var(--text3); transition:color .15s; position:relative;
+}
+.bnav-item.active { color:var(--accent); }
+.bnav-icon { font-size:20px; line-height:1; }
+.bnav-label { font-size:9px; font-weight:500; letter-spacing:.03em; }
+.bnav-badge {
+  position:absolute; top:4px; right:calc(50% - 14px);
+  background:var(--danger); color:#fff; font-size:8px;
+  padding:1px 4px; border-radius:8px; font-weight:700; min-width:14px; text-align:center;
+}
+
+/* ── ANIMATIONS ──────────────────────────────── */
+@keyframes fadeUp { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+@keyframes modalIn { from{opacity:0;transform:translateY(10px) scale(.98)} to{opacity:1;transform:none} }
+::-webkit-scrollbar { width:3px; height:3px; }
+::-webkit-scrollbar-track { background:transparent; }
+::-webkit-scrollbar-thumb { background:var(--surface3); border-radius:2px; }
+
+/* ══════════════════════════════════════════════
+   RESPONSIVE BREAKPOINTS
+══════════════════════════════════════════════ */
+
+/* ── TABLET (≤1024px) ────────────────────────── */
+@media (max-width:1024px) {
+  :root { --sidebar-w: 200px; }
+  .kpi-row { grid-template-columns:repeat(3,1fr); }
+  .kpi-row .kpi-card:nth-child(4),
+  .kpi-row .kpi-card:nth-child(5) { grid-column:span 1; }
+  .grid-main { grid-template-columns:1fr; }
+  .grid-side { display:grid; grid-template-columns:1fr 1fr; gap:14px; flex-direction:unset; }
+  .kanban-board { grid-template-columns:repeat(2,1fr); }
+  .form-grid2 { grid-template-columns:1fr; }
+  .topbar-sub { display:none; }
+  .topbar-sep { display:none; }
+}
+
+/* ── MOBILE (≤768px) ─────────────────────────── */
+@media (max-width:768px) {
+  /* Sidebar becomes drawer */
+  .sidebar {
+    position:fixed; top:0; left:0; bottom:0;
+    transform:translateX(-100%);
+    border-right:1px solid var(--border);
+    width:260px;
+  }
+  .sidebar.open { transform:translateX(0); box-shadow:0 0 40px rgba(0,0,0,.5); }
+
+  /* Show hamburger & bottom nav */
+  .topbar-hamburger { display:flex; align-items:center; justify-content:center; }
+  .bottom-nav { display:flex; }
+  .btn-text { display:none; }
+  .btn-icon { display:flex; }
+  .topbar-actions .btn-ghost { display:none; }
+
+  /* Content bottom padding for bottom nav */
+  .content-area { padding:14px; padding-bottom:calc(var(--bottomnav-h) + 14px); }
+
+  /* KPI: 2 cols */
+  .kpi-row { grid-template-columns:repeat(2,1fr); gap:10px; margin-bottom:14px; }
+  .kpi-card { padding:14px; }
+  .kpi-value { font-size:18px; }
+
+  /* Main grid: single col */
+  .grid-main { grid-template-columns:1fr; gap:12px; }
+  .grid-side { display:flex; flex-direction:column; gap:12px; }
+
+  /* Kanban: horizontal scroll */
+  .kanban-board { grid-template-columns:repeat(4,82vw); overflow-x:auto; padding-bottom:8px; -webkit-overflow-scrolling:touch; }
+  .kanban-board::-webkit-scrollbar { height:2px; }
+
+  /* Tables: horizontal scroll */
+  .table-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .tt-table { min-width:560px; }
+  .tt-table th, .tt-table td { padding:8px; font-size:11px; }
+
+  /* Gantt */
+  .gantt-wrap { overflow-x:auto; -webkit-overflow-scrolling:touch; }
+  .gantt-inner { min-width:500px; }
+
+  /* Modal full-screen on mobile */
+  .modal-overlay { align-items:flex-end; padding:0; }
+  .modal { border-radius:16px 16px 0 0; max-height:92dvh; padding:20px 16px; width:100%; max-width:100%; }
+
+  /* Form grid */
+  .form-grid2 { grid-template-columns:1fr; }
+
+  /* Detail grid */
+  .detail-grid { grid-template-columns:1fr 1fr; gap:10px; }
+
+  /* Approval items: wrap buttons below */
+  .approval-item { flex-wrap:wrap; }
+  .approval-actions { width:100%; margin-top:8px; justify-content:flex-end; }
+
+  /* TT full view: card layout */
+  .tt-stat-grid { grid-template-columns:repeat(2,1fr) !important; }
+
+  /* Panel body tighter */
+  .panel-body { padding:12px 14px; }
+  .panel-header { padding:12px 14px; }
+}
+
+/* ── SMALL MOBILE (≤390px) ───────────────────── */
+@media (max-width:390px) {
+  .kpi-row { grid-template-columns:1fr 1fr; }
+  .kpi-value { font-size:16px; }
+  .task-name { font-size:12px; }
+  .detail-grid { grid-template-columns:1fr; }
+  .bnav-label { display:none; }
+  .bnav-icon { font-size:22px; }
+  .bottom-nav { height:52px; }
+  .content-area { padding-bottom:calc(52px + 12px); }
+}
+</style>
+</head>
+<body>
+
+<!-- ── SIDEBAR OVERLAY ─────────────────────── -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="closeSidebar()"></div>
+
+<div class="app">
+  <!-- ── SIDEBAR ───────────────────────────── -->
+  <aside class="sidebar" id="sidebar">
+    <div class="logo">
+      <div class="logo-mark">RetailDesign</div>
+      <div class="logo-sub" data-i="logoSub">OS v1.0 · Portfolio</div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label" data-i="navOverview">Обзор</div>
+      <div class="nav-item active" onclick="switchView('dashboard',this)">
+        <span class="nav-icon">◈</span><span class="nav-text" data-i="navDashboard">Дашборд</span>
+      </div>
+      <div class="nav-item" onclick="switchView('pipeline',this)">
+        <span class="nav-icon">⬡</span><span class="nav-text" data-i="navPipeline">Воронка задач</span>
+        <span class="nav-badge">12</span>
+      </div>
+      <div class="nav-item" onclick="switchView('gantt',this)">
+        <span class="nav-icon">▤</span><span class="nav-text" data-i="navGantt">Таймлайн</span>
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label" data-i="navFinance">Финансы</div>
+      <div class="nav-item" onclick="switchView('budget',this)">
+        <span class="nav-icon">◎</span><span class="nav-text" data-i="navBudget">Бюджеты</span>
+      </div>
+      <div class="nav-item" onclick="switchView('payments',this)">
+        <span class="nav-icon">◇</span><span class="nav-text" data-i="navPayments">Оплаты / КП</span>
+        <span class="nav-badge warn">3</span>
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label" data-i="navLogistics">Логистика</div>
+      <div class="nav-item" onclick="switchView('tt',this)">
+        <span class="nav-icon">◉</span><span class="nav-text" data-i="navTT">Торговые точки</span>
+        <span class="nav-badge danger">7</span>
+      </div>
+    </div>
+    <div class="nav-section">
+      <div class="nav-label" data-i="navSystem">Система</div>
+      <div class="nav-item" onclick="switchView('approvals',this)">
+        <span class="nav-icon">✓</span><span class="nav-text" data-i="navApprovals">Согласования</span>
+        <span class="nav-badge danger">4</span>
+      </div>
+      <div class="nav-item" onclick="switchView('brands',this)">
+        <span class="nav-icon">◈</span><span class="nav-text" data-i="navBrands">Бренды</span>
+      </div>
+      <div class="nav-item" onclick="openNewTask();closeSidebar()">
+        <span class="nav-icon">＋</span><span class="nav-text" data-i="navNewTZ">Новое ТЗ</span>
+      </div>
+    </div>
+    <div class="sidebar-footer">
+      <div class="user-card">
+        <div class="user-avatar">АК</div>
+        <div>
+          <div class="user-name">А. Козлова</div>
+          <div class="user-role" data-i="roleManager">Менеджер</div>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ── MAIN ──────────────────────────────── -->
+  <div class="main">
+    <!-- TOPBAR -->
+    <div class="topbar">
+      <button class="topbar-hamburger" onclick="openSidebar()">☰</button>
+      <div class="topbar-title" id="page-title" data-i="navDashboard">Дашборд</div>
+      <span class="topbar-sep">·</span>
+      <div class="topbar-sub" data-i="topbarSub">Q2 2025 · 15 брендов · 3 группы</div>
+      <div class="topbar-actions">
+        <div class="lang-toggle">
+          <button class="lang-btn active" onclick="setLang('ru',this)">RU</button>
+          <button class="lang-btn" onclick="setLang('en',this)">EN</button>
+        </div>
+        <button class="btn btn-ghost" style="display:flex;align-items:center;gap:5px">
+          <span class="btn-text" data-i="btnFilter">Фильтр</span>
+          <span style="font-size:14px">⬡</span>
+        </button>
+        <button class="btn btn-primary" onclick="openNewTask()" style="display:flex;align-items:center;gap:5px">
+          <span>＋</span><span class="btn-text" data-i="btnNewTZ">Новое ТЗ</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- CONTENT -->
+    <div class="content-area">
+
+      <!-- ══ DASHBOARD ════════════════════════ -->
+      <div class="view active" id="view-dashboard">
+        <div class="kpi-row">
+          <div class="kpi-card blue">
+            <div class="kpi-label" data-i="kpiActive">Активных задач</div>
+            <div class="kpi-value">12</div>
+            <div class="kpi-sub" data-i="kpiActiveSub">из 15 брендов</div>
+            <div class="kpi-delta up">↑ +2 <span data-i="kpiMonth">за месяц</span></div>
+          </div>
+          <div class="kpi-card amber">
+            <div class="kpi-label" data-i="kpiUrgent">Срок &lt; 14 дней</div>
+            <div class="kpi-value" style="color:var(--warn)">4</div>
+            <div class="kpi-sub" data-i="kpiUrgentSub">требуют внимания</div>
+            <div class="kpi-delta down">⚠ 2 <span data-i="kpiCritical">критичных</span></div>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-label" data-i="kpiDone">Завершено Q2</div>
+            <div class="kpi-value" style="color:var(--accent3)">7</div>
+            <div class="kpi-sub" data-i="kpiDoneSub">лончей в срок</div>
+            <div class="kpi-delta up">↑ 100% on-time</div>
+          </div>
+          <div class="kpi-card purple">
+            <div class="kpi-label" data-i="kpiBudget">Бюджет Q2</div>
+            <div class="kpi-value" style="font-size:16px">₽18.4М</div>
+            <div class="kpi-sub" data-i="kpiBudgetSub">из ₽24М плана</div>
+            <div class="kpi-delta up">76% <span data-i="kpiSpent">освоено</span></div>
+          </div>
+          <div class="kpi-card red">
+            <div class="kpi-label" data-i="kpiTT">ТТ без подтв.</div>
+            <div class="kpi-value" style="color:var(--danger)">23</div>
+            <div class="kpi-sub" data-i="kpiTTSub">из 187 точек</div>
+            <div class="kpi-delta down">↓ <span data-i="kpiCheck">нужна проверка</span></div>
+          </div>
+        </div>
+
+        <div class="grid-main">
+          <div class="panel">
+            <div class="panel-header">
+              <div class="panel-title" data-i="panelActiveTasks">АКТИВНЫЕ ЗАДАЧИ</div>
+              <span class="panel-count">12</span>
+              <div class="panel-actions">
+                <div class="pipeline-tabs">
+                  <div class="ptab active" onclick="filterTasks('all',this)" data-i="tabAll">Все</div>
+                  <div class="ptab" onclick="filterTasks('urgent',this)" data-i="tabUrgent">Срочные</div>
+                  <div class="ptab" onclick="filterTasks('approval',this)" data-i="tabApproval">Согласование</div>
+                </div>
+              </div>
+            </div>
+            <div class="panel-body">
+              <div class="task-list" id="task-list"></div>
+            </div>
+          </div>
+
+          <div class="grid-side">
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title" data-i="panelPending">ОЖИДАЮТ РЕШЕНИЯ</div>
+                <span class="panel-count" style="background:rgba(239,68,68,.15);color:var(--danger)">4</span>
+              </div>
+              <div class="panel-body" style="padding:10px 14px">
+                <div id="approval-list"></div>
+              </div>
+            </div>
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title" data-i="panelBudget">БЮДЖЕТ ПО ГРУППАМ</div>
+              </div>
+              <div class="panel-body"><div id="budget-mini"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title" data-i="panelTT">СТАТУС ТОРГОВЫХ ТОЧЕК</div>
+            <div class="panel-actions">
+              <button class="btn btn-ghost" style="font-size:10px" data-i="btnAxapta">Выгрузить из АХ</button>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="table-scroll"><div id="tt-mini"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ PIPELINE ══════════════════════════ -->
+      <div class="view" id="view-pipeline">
+        <div class="kanban-board" id="kanban-board"></div>
+      </div>
+
+      <!-- ══ GANTT ════════════════════════════ -->
+      <div class="view" id="view-gantt">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title" data-i="panelGantt">ТАЙМЛАЙН — Q2 2025</div>
+          </div>
+          <div class="panel-body">
+            <div class="gantt-wrap"><div class="gantt-inner" id="gantt-content"></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ══ BUDGET ════════════════════════════ -->
+      <div class="view" id="view-budget">
+        <div class="kpi-row" style="grid-template-columns:repeat(3,1fr);margin-bottom:16px">
+          <div class="kpi-card blue">
+            <div class="kpi-label" data-i="groupA">Группа A — план Q2</div>
+            <div class="kpi-value">₽8.0М</div>
+            <div class="kpi-sub" data-i="groupASpent">Освоено ₽6.2М · 77%</div>
+          </div>
+          <div class="kpi-card green">
+            <div class="kpi-label" data-i="groupB">Группа B — план Q2</div>
+            <div class="kpi-value">₽9.0М</div>
+            <div class="kpi-sub" data-i="groupBSpent">Освоено ₽7.4М · 82%</div>
+          </div>
+          <div class="kpi-card amber">
+            <div class="kpi-label" data-i="groupC">Группа C — план Q2</div>
+            <div class="kpi-value">₽7.0М</div>
+            <div class="kpi-sub" data-i="groupCSpent">Освоено ₽4.8М · 69%</div>
+          </div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title" data-i="panelBudgetDetail">ДЕТАЛИЗАЦИЯ БЮДЖЕТОВ</div></div>
+          <div class="panel-body table-scroll"><div id="budget-detail"></div></div>
+        </div>
+      </div>
+
+      <!-- ══ PAYMENTS ══════════════════════════ -->
+      <div class="view" id="view-payments">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title" data-i="panelPayments">КП И ОПЛАТЫ ПОДРЯДЧИКАМ</div>
+            <div class="panel-actions">
+              <button class="btn btn-ghost" style="font-size:10px" data-i="btnUploadKP">↑ Загрузить КП</button>
+            </div>
+          </div>
+          <div class="panel-body table-scroll"><div id="payments-content"></div></div>
+        </div>
+      </div>
+
+      <!-- ══ TT ════════════════════════════════ -->
+      <div class="view" id="view-tt">
+        <div class="panel">
+          <div class="panel-header">
+            <div class="panel-title" data-i="panelTTFull">СТАТУС ДОСТАВКИ — ТОРГОВЫЕ ТОЧКИ</div>
+            <span class="panel-count">187</span>
+            <div class="panel-actions">
+              <button class="btn btn-ghost" style="font-size:10px" data-i="btnAxapta">Выгрузка АХ</button>
+            </div>
+          </div>
+          <div class="panel-body"><div id="tt-full"></div></div>
+        </div>
+      </div>
+
+      <!-- ══ APPROVALS ═════════════════════════ -->
+      <div class="view" id="view-approvals">
+        <div class="panel">
+          <div class="panel-header"><div class="panel-title" data-i="panelApprovals">ВСЕ СОГЛАСОВАНИЯ</div></div>
+          <div class="panel-body"><div id="approvals-full"></div></div>
+        </div>
+      </div>
+
+      <!-- ══ BRANDS ════════════════════════════ -->
+      <div class="view" id="view-brands">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px" id="brands-grid"></div>
+      </div>
+
+    </div><!-- /content-area -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- ── BOTTOM NAV (mobile) ───────────────────── -->
+<nav class="bottom-nav">
+  <div class="bnav-item active" id="bnav-dashboard" onclick="switchView('dashboard',document.querySelector('.nav-item.active'));setBottomNav('dashboard')">
+    <div class="bnav-icon">◈</div>
+    <div class="bnav-label" data-i="navDashboard">Дашборд</div>
+  </div>
+  <div class="bnav-item" id="bnav-pipeline" onclick="switchView('pipeline',document.querySelectorAll('.nav-item')[1]);setBottomNav('pipeline')">
+    <div class="bnav-icon">⬡</div>
+    <div class="bnav-label" data-i="navPipeline">Задачи</div>
+    <div class="bnav-badge">12</div>
+  </div>
+  <div class="bnav-item" id="bnav-tt" onclick="switchView('tt',document.querySelectorAll('.nav-item')[4]);setBottomNav('tt')">
+    <div class="bnav-icon">◉</div>
+    <div class="bnav-label" data-i="navTT">ТТ</div>
+    <div class="bnav-badge">7</div>
+  </div>
+  <div class="bnav-item" id="bnav-approvals" onclick="switchView('approvals',document.querySelectorAll('.nav-item')[5]);setBottomNav('approvals')">
+    <div class="bnav-icon">✓</div>
+    <div class="bnav-label" data-i="navApprovals">Согласов.</div>
+    <div class="bnav-badge">4</div>
+  </div>
+  <div class="bnav-item" onclick="openNewTask()">
+    <div class="bnav-icon" style="color:var(--accent)">＋</div>
+    <div class="bnav-label" data-i="btnNewTZ">Новое ТЗ</div>
+  </div>
+</nav>
+
+<!-- ── TASK DETAIL MODAL ─────────────────────── -->
+<div class="modal-overlay" id="modal-task">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" id="modal-task-title"></div>
+        <div class="modal-sub" id="modal-task-brand"></div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-task')">✕</button>
+    </div>
+    <div class="detail-stages" id="modal-stages"></div>
+    <div class="detail-grid" id="modal-detail-grid"></div>
+    <div class="detail-section-title" data-i="labelTeam">КОМАНДА ПРОЕКТА</div>
+    <div class="team-chips" id="modal-team"></div>
+    <div class="detail-section-title" data-i="labelFinance">ФИНАНСЫ</div>
+    <div id="modal-finance"></div>
+    <div class="detail-section-title" data-i="labelDocs">ДОКУМЕНТЫ</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;" id="modal-docs"></div>
+    <div style="margin-top:18px;display:flex;gap:10px;justify-content:flex-end">
+      <button class="btn btn-ghost" onclick="closeModal('modal-task')" data-i="btnClose">Закрыть</button>
+      <button class="btn btn-primary" data-i="btnGo">Перейти к задаче →</button>
+    </div>
+  </div>
+</div>
+
+<!-- ── NEW TZ MODAL ──────────────────────────── -->
+<div class="modal-overlay" id="modal-newtask">
+  <div class="modal">
+    <div class="modal-header">
+      <div>
+        <div class="modal-title" data-i="newTZTitle">Новое техническое задание</div>
+        <div class="modal-sub" data-i="newTZSub">Заявка на разработку торгового оборудования</div>
+      </div>
+      <button class="modal-close" onclick="closeModal('modal-newtask')">✕</button>
+    </div>
+    <div class="form-grid2">
+      <div class="form-row">
+        <label class="form-label" data-i="fieldBrand">Бренд</label>
+        <select class="form-select">
+          <option>Lumière (Группа A)</option><option>Novalux (Группа A)</option>
+          <option>Botanica (Группа B)</option><option>SkinLab (Группа B)</option><option>Velvet (Группа C)</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <label class="form-label" data-i="fieldType">Тип оборудования</label>
+        <select class="form-select">
+          <option data-i="typeDisplay">Подставка / дисплей</option>
+          <option data-i="typeBasket">Ёмкость / корзина</option>
+          <option data-i="typeCorner">Полноценный корнер</option>
+          <option data-i="typeShelf">Полочная авторизация</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-grid2">
+      <div class="form-row">
+        <label class="form-label" data-i="fieldLaunch">Дата лонча продукта</label>
+        <input type="date" class="form-input" value="2025-09-15">
+      </div>
+      <div class="form-row">
+        <label class="form-label" data-i="fieldDeadline">Дедлайн наличия в ТТ</label>
+        <input type="date" class="form-input" value="2025-09-10">
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label" data-i="fieldProduct">Название продукта / SKU</label>
+      <input type="text" class="form-input" placeholder="Serum Pro 30ml">
+    </div>
+    <div class="form-grid2">
+      <div class="form-row">
+        <label class="form-label" data-i="fieldDims">Размеры (Ш × Г × В, мм)</label>
+        <input type="text" class="form-input" placeholder="45 × 45 × 120">
+      </div>
+      <div class="form-row">
+        <label class="form-label" data-i="fieldAuth">Авторизация</label>
+        <select class="form-select">
+          <option data-i="authYes">Да — авторизованное место</option>
+          <option data-i="authNo">Нет — открытая полка</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label" data-i="fieldFiles">Фото + 3D-модель (.skp / .stl)</label>
+      <div class="upload-box">
+        <div style="font-size:24px;margin-bottom:5px">⬡</div>
+        <span data-i="uploadHint">Перетащите файлы или нажмите для загрузки</span><br>
+        <span style="font-size:10px;color:var(--text3)">JPG, PNG, SKP, STL — до 50 МБ</span>
+      </div>
+    </div>
+    <div class="form-grid2">
+      <div class="form-row">
+        <label class="form-label" data-i="fieldQty">Тираж (шт.)</label>
+        <input type="number" class="form-input" placeholder="500">
+      </div>
+      <div class="form-row">
+        <label class="form-label" data-i="fieldBudget">Бюджет (₽)</label>
+        <input type="number" class="form-input" placeholder="300000">
+      </div>
+    </div>
+    <div class="form-row">
+      <label class="form-label" data-i="fieldComment">Комментарий</label>
+      <textarea class="form-input" style="height:56px;resize:none" placeholder="Цвет, материал, логотипирование..."></textarea>
+    </div>
+    <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:6px">
+      <button class="btn btn-ghost" onclick="closeModal('modal-newtask')" data-i="btnCancel">Отмена</button>
+      <button class="btn btn-primary" onclick="submitNewTask()" data-i="btnCreate">Создать задачу →</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ═══════════════════════════════════════════════════
+// i18n
+// ═══════════════════════════════════════════════════
+const T = {
+  ru: {
+    logoSub:'OS v1.0 · Портфолио', navOverview:'Обзор', navDashboard:'Дашборд',
+    navPipeline:'Воронка задач', navGantt:'Таймлайн', navFinance:'Финансы',
+    navBudget:'Бюджеты', navPayments:'Оплаты / КП', navLogistics:'Логистика',
+    navTT:'Торговые точки', navSystem:'Система', navApprovals:'Согласования',
+    navBrands:'Бренды', navNewTZ:'Новое ТЗ', roleManager:'Менеджер',
+    topbarSub:'Q2 2025 · 15 брендов · 3 группы',
+    btnFilter:'Фильтр', btnNewTZ:'Новое ТЗ',
+    kpiActive:'Активных задач', kpiActiveSub:'из 15 брендов', kpiMonth:'за месяц',
+    kpiUrgent:'Срок < 14 дней', kpiUrgentSub:'требуют внимания', kpiCritical:'критичных',
+    kpiDone:'Завершено Q2', kpiDoneSub:'лончей в срок',
+    kpiBudget:'Бюджет Q2', kpiBudgetSub:'из ₽24М плана', kpiSpent:'освоено',
+    kpiTT:'ТТ без подтв.', kpiTTSub:'из 187 точек', kpiCheck:'нужна проверка',
+    panelActiveTasks:'АКТИВНЫЕ ЗАДАЧИ', panelPending:'ОЖИДАЮТ РЕШЕНИЯ',
+    panelBudget:'БЮДЖЕТ ПО ГРУППАМ', panelTT:'СТАТУС ТОРГОВЫХ ТОЧЕК',
+    panelGantt:'ТАЙМЛАЙН — Q2 2025', panelBudgetDetail:'ДЕТАЛИЗАЦИЯ БЮДЖЕТОВ',
+    panelPayments:'КП И ОПЛАТЫ ПОДРЯДЧИКАМ', panelTTFull:'СТАТУС ДОСТАВКИ — ТОРГОВЫЕ ТОЧКИ',
+    panelApprovals:'ВСЕ СОГЛАСОВАНИЯ',
+    tabAll:'Все', tabUrgent:'Срочные', tabApproval:'Согласование',
+    btnAxapta:'Выгрузить из АХ', btnUploadKP:'↑ Загрузить КП',
+    groupA:'Группа A — план Q2', groupASpent:'Освоено ₽6.2М · 77%',
+    groupB:'Группа B — план Q2', groupBSpent:'Освоено ₽7.4М · 82%',
+    groupC:'Группа C — план Q2', groupCSpent:'Освоено ₽4.8М · 69%',
+    labelTeam:'КОМАНДА ПРОЕКТА', labelFinance:'ФИНАНСЫ', labelDocs:'ДОКУМЕНТЫ',
+    btnClose:'Закрыть', btnGo:'Перейти к задаче →',
+    newTZTitle:'Новое техническое задание', newTZSub:'Заявка на разработку торгового оборудования',
+    fieldBrand:'Бренд', fieldType:'Тип оборудования',
+    typeDisplay:'Подставка / дисплей', typeBasket:'Ёмкость / корзина',
+    typeCorner:'Полноценный корнер', typeShelf:'Полочная авторизация',
+    fieldLaunch:'Дата лонча', fieldDeadline:'Дедлайн в ТТ',
+    fieldProduct:'Название продукта / SKU', fieldDims:'Размеры (Ш×Г×В, мм)',
+    fieldAuth:'Авторизация', authYes:'Да — авторизованное место', authNo:'Нет — открытая полка',
+    fieldFiles:'Фото + 3D-модель (.skp/.stl)', uploadHint:'Перетащите файлы или нажмите',
+    fieldQty:'Тираж (шт.)', fieldBudget:'Бюджет (₽)', fieldComment:'Комментарий',
+    btnCancel:'Отмена', btnCreate:'Создать задачу →',
+    // data strings
+    stages:['ТЗ получено','Разработка эскиза','Согласование','КП подрядчика','Образец','Утверждение образца','Предоплата','Производство тиража','Номенклатура','Отгрузка РЦ','Доставка в ТТ','Закрыт'],
+    stageShort:['ТЗ','Эскиз','Согласов.','КП','Образец','Утв.обр.','Предоплата','Тираж','Номенкл.','Отгрузка','ТТ'],
+    months:['Май','Июн','Июл','Авг','Сен','Окт'],
+    viewTitles:{dashboard:'Дашборд',pipeline:'Воронка задач',gantt:'Таймлайн Gantt',budget:'Бюджеты',payments:'КП и Оплаты',tt:'Торговые точки',approvals:'Согласования',brands:'Портфолио брендов'},
+    alertCreated:'ТЗ создано! Задача RD-045 добавлена в систему и команда уведомлена по email.',
+    alertApproved:'Согласовано ✓',
+    ttOk:'Получили', ttPartial:'Неполный объём', ttMiss:'Не получили', ttTotal:'Всего ТТ',
+    sampleCost:'Образец', tirazh:'Стоимость тиража', totalBudget:'Итого бюджет',
+    prepaidPaid:'Предоплата внесена', balance:'Остаток к оплате', currency:'Валюта КП',
+    paidFull:'Оплачен полностью', deadline:'Дедлайн в ТТ', launch:'Дата лонча',
+    curStage:'Текущий этап', readiness:'Готовность', ttOkOf:'ТТ: получили', ttIssues:'ТТ: проблемы',
+    issues:'точки', role:'Роль', approve:'✓ Утвердить', reject:'✗ Отклонить', comment:'Комментарий',
+    confirmed:'подтверждено', noBrands:'5 брендов', noTasks:'— нет задач', activeTasks:'активных задач',
+    fullPayment:'Полная оплата', prepayment:'Предоплата', notPaid:'Не оплачен',
+    sampleLabel:'Образец', tirazjLabel:'Тираж', totalLabel:'Итого',
+    docTZ:'ТЗ бренда', docKP:'КП подрядчика', docSketch:'Эскизы v2', doc3D:'3D модель .stl', docYandex:'Яндекс.Диск',
+    colTask:'Задача', colBrand:'Бренд', colGroup:'Группа', colSample:'Образец', colTirazh:'Тираж',
+    colTotal:'Итого', colPayStatus:'Статус оплаты', colContractor:'Подрядчик', colKPDate:'Дата КП',
+    colPrepaid:'Предоплата', colBalance:'Баланс', colStatus:'Статус',
+    colTTTotal:'Всего ТТ', colReceived:'Получили', colPartial:'Неполный', colMissing:'Не получили', colProgress:'Прогресс',
+    devStage:'ТЗ & Разработка', approvalStage:'Согласование', productionStage:'Производство & Оплата', logisticsStage:'Логистика & ТТ',
+    addBrand:'+ Бренд', legend_dev:'Разработка', legend_approval:'Согласование/Производство', legend_logistics:'Логистика', legend_today:'Сегодня',
+    groupLabel:'Группа',
+  },
+  en: {
+    logoSub:'OS v1.0 · Portfolio', navOverview:'Overview', navDashboard:'Dashboard',
+    navPipeline:'Task Pipeline', navGantt:'Timeline', navFinance:'Finance',
+    navBudget:'Budgets', navPayments:'Payments / RFQ', navLogistics:'Logistics',
+    navTT:'Retail Outlets', navSystem:'System', navApprovals:'Approvals',
+    navBrands:'Brands', navNewTZ:'New Brief', roleManager:'Manager',
+    topbarSub:'Q2 2025 · 15 brands · 3 groups',
+    btnFilter:'Filter', btnNewTZ:'New Brief',
+    kpiActive:'Active Tasks', kpiActiveSub:'across 15 brands', kpiMonth:'this month',
+    kpiUrgent:'Due < 14 days', kpiUrgentSub:'need attention', kpiCritical:'critical',
+    kpiDone:'Completed Q2', kpiDoneSub:'launches on time',
+    kpiBudget:'Q2 Budget', kpiBudgetSub:'of ₽24M plan', kpiSpent:'utilized',
+    kpiTT:'Outlets pending', kpiTTSub:'out of 187 outlets', kpiCheck:'needs review',
+    panelActiveTasks:'ACTIVE TASKS', panelPending:'PENDING DECISIONS',
+    panelBudget:'BUDGET BY GROUP', panelTT:'RETAIL OUTLET STATUS',
+    panelGantt:'TIMELINE — Q2 2025', panelBudgetDetail:'BUDGET BREAKDOWN',
+    panelPayments:'RFQ & PAYMENTS TO CONTRACTORS', panelTTFull:'DELIVERY STATUS — RETAIL OUTLETS',
+    panelApprovals:'ALL APPROVALS',
+    tabAll:'All', tabUrgent:'Urgent', tabApproval:'Approval',
+    btnAxapta:'Pull from AX', btnUploadKP:'↑ Upload RFQ',
+    groupA:'Group A — Q2 Plan', groupASpent:'Spent ₽6.2M · 77%',
+    groupB:'Group B — Q2 Plan', groupBSpent:'Spent ₽7.4M · 82%',
+    groupC:'Group C — Q2 Plan', groupCSpent:'Spent ₽4.8M · 69%',
+    labelTeam:'PROJECT TEAM', labelFinance:'FINANCES', labelDocs:'DOCUMENTS',
+    btnClose:'Close', btnGo:'Open Task →',
+    newTZTitle:'New Technical Brief', newTZSub:'Request for retail equipment development',
+    fieldBrand:'Brand', fieldType:'Equipment Type',
+    typeDisplay:'Display stand', typeBasket:'Container / basket',
+    typeCorner:'Full corner', typeShelf:'Shelf authorisation',
+    fieldLaunch:'Product launch date', fieldDeadline:'Deadline at outlet',
+    fieldProduct:'Product name / SKU', fieldDims:'Dimensions (W×D×H, mm)',
+    fieldAuth:'Authorisation', authYes:'Yes — authorised space', authNo:'No — open shelf',
+    fieldFiles:'Photo + 3D model (.skp/.stl)', uploadHint:'Drop files or click to upload',
+    fieldQty:'Print run (pcs)', fieldBudget:'Budget (₽)', fieldComment:'Notes',
+    btnCancel:'Cancel', btnCreate:'Create Task →',
+    stages:['Brief received','Sketch development','Approval','Contractor RFQ','Sample','Sample approval','Prepayment','Production run','Nomenclature','DC dispatch','Outlet delivery','Closed'],
+    stageShort:['Brief','Sketch','Approval','RFQ','Sample','Smp.Appr.','Prepay','Run','Nomen.','Dispatch','Outlet'],
+    months:['May','Jun','Jul','Aug','Sep','Oct'],
+    viewTitles:{dashboard:'Dashboard',pipeline:'Task Pipeline',gantt:'Gantt Timeline',budget:'Budgets',payments:'RFQ & Payments',tt:'Retail Outlets',approvals:'Approvals',brands:'Brand Portfolio'},
+    alertCreated:'Brief created! Task RD-045 added and team notified by email.',
+    alertApproved:'Approved ✓',
+    ttOk:'Received', ttPartial:'Partial', ttMiss:'Not received', ttTotal:'Total outlets',
+    sampleCost:'Sample cost', tirazh:'Production run cost', totalBudget:'Total budget',
+    prepaidPaid:'Prepayment made', balance:'Balance due', currency:'RFQ currency',
+    paidFull:'Fully paid', deadline:'Outlet deadline', launch:'Launch date',
+    curStage:'Current stage', readiness:'Readiness', ttOkOf:'Outlets: received', ttIssues:'Outlets: issues',
+    issues:'outlets', role:'Role', approve:'✓ Approve', reject:'✗ Reject', comment:'Comment',
+    confirmed:'confirmed', noBrands:'5 brands', noTasks:'— no tasks', activeTasks:'active tasks',
+    fullPayment:'Fully paid', prepayment:'Prepaid', notPaid:'Not paid',
+    sampleLabel:'Sample', tirazjLabel:'Run', totalLabel:'Total',
+    docTZ:'Brand Brief', docKP:'Contractor RFQ', docSketch:'Sketches v2', doc3D:'3D model .stl', docYandex:'Yandex Disk',
+    colTask:'Task', colBrand:'Brand', colGroup:'Group', colSample:'Sample', colTirazh:'Run',
+    colTotal:'Total', colPayStatus:'Payment status', colContractor:'Contractor', colKPDate:'RFQ date',
+    colPrepaid:'Prepaid', colBalance:'Balance', colStatus:'Status',
+    colTTTotal:'Total', colReceived:'Received', colPartial:'Partial', colMissing:'Missing', colProgress:'Progress',
+    devStage:'Brief & Dev', approvalStage:'Approval', productionStage:'Production & Payment', logisticsStage:'Logistics & Outlets',
+    addBrand:'+ Brand', legend_dev:'Development', legend_approval:'Approval/Production', legend_logistics:'Logistics', legend_today:'Today',
+    groupLabel:'Group',
+  }
+};
+
+let lang = 'ru';
+
+function setLang(l, btn) {
+  lang = l;
+  document.querySelectorAll('.lang-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  applyTranslations();
+  // re-render visible content
+  renderTasks();
+  renderApprovalsMini();
+  renderBudgetMini();
+  renderTTMini();
+  const activeView = document.querySelector('.view.active');
+  if(activeView) {
+    const id = activeView.id.replace('view-','');
+    if(id==='pipeline') renderKanban();
+    else if(id==='gantt') renderGantt();
+    else if(id==='budget') renderBudgetDetail();
+    else if(id==='payments') renderPayments();
+    else if(id==='tt') renderTTFull();
+    else if(id==='approvals') renderApprovalsFull();
+    else if(id==='brands') renderBrands();
+  }
+  const pageTitle = document.getElementById('page-title');
+  const cur = Object.keys(T.ru.viewTitles).find(k=>T.ru.viewTitles[k]===pageTitle.textContent||T.en.viewTitles[k]===pageTitle.textContent);
+  if(cur) pageTitle.textContent = T[lang].viewTitles[cur];
+}
+
+function applyTranslations() {
+  document.querySelectorAll('[data-i]').forEach(el=>{
+    const key = el.getAttribute('data-i');
+    if(T[lang][key]) el.textContent = T[lang][key];
+  });
+}
+
+// ═══════════════════════════════════════════════════
+// DATA
+// ═══════════════════════════════════════════════════
+const GROUPS = [
+  {id:'A',name:'Group A',color:'#5b6af0',budget:8000000,spent:6200000},
+  {id:'B',name:'Group B',color:'#06d6a0',budget:9000000,spent:7400000},
+  {id:'C',name:'Group C',color:'#f59e0b',budget:7000000,spent:4800000},
+];
+const BRANDS = [
+  {id:1,name:'Lumière',group:'A'},{id:2,name:'Novalux',group:'A'},{id:3,name:'Clarity',group:'A'},{id:4,name:'AquaPure',group:'A'},{id:5,name:'GlowBase',group:'A'},
+  {id:6,name:'Botanica',group:'B'},{id:7,name:'SkinLab',group:'B'},{id:8,name:'VitaGlow',group:'B'},{id:9,name:'BioEssence',group:'B'},{id:10,name:'NatureCode',group:'B'},
+  {id:11,name:'Velvet',group:'C'},{id:12,name:'Premiere',group:'C'},{id:13,name:'LuxForm',group:'C'},{id:14,name:'MetaBeauty',group:'C'},{id:15,name:'Orbis',group:'C'},
+];
+const TASKS = [
+  {id:'RD-041',brand:'Lumière',group:'A',name:'Serum Pro Display Stand',stage:6,daysLeft:8,budget:320000,sample:45000,tiraж:275000,prepaid:137500,currency:'RUB',ttTotal:42,ttOk:38,ttPartial:2,ttMiss:2,team:['А.Козлова / A.Kozlova','В.Петров / V.Petrov','О.Сидорова / O.Sidorova'],deadline:'10.09.25',launch:'15.09.25',urgent:true},
+  {id:'RD-038',brand:'Botanica',group:'B',name:'Herbal Collection Corner',stage:8,daysLeft:22,budget:980000,sample:120000,tiraж:860000,prepaid:430000,currency:'RUB',ttTotal:87,ttOk:87,ttPartial:0,ttMiss:0,team:['А.Козлова / A.Kozlova','М.Иванов / M.Ivanov'],deadline:'05.08.25',launch:'10.08.25',urgent:false},
+  {id:'RD-044',brand:'Velvet',group:'C',name:'Prestige Line Container',stage:3,daysLeft:61,budget:0,sample:0,tiraж:0,prepaid:0,currency:'EUR',ttTotal:0,ttOk:0,ttPartial:0,ttMiss:0,team:['А.Козлова / A.Kozlova','В.Петров / V.Petrov'],deadline:'20.11.25',launch:'25.11.25',urgent:false},
+  {id:'RD-039',brand:'Novalux',group:'A',name:'Eye Collection Display',stage:10,daysLeft:3,budget:540000,sample:60000,tiraж:480000,prepaid:480000,currency:'RUB',ttTotal:63,ttOk:44,ttPartial:8,ttMiss:11,team:['А.Козлова / A.Kozlova','О.Сидорова / O.Sidorova','К.Белов / K.Belov'],deadline:'12.07.25',launch:'15.07.25',urgent:true},
+  {id:'RD-042',brand:'SkinLab',group:'B',name:'Peptide Rx Shelf Auth.',stage:4,daysLeft:45,budget:190000,sample:30000,tiraж:0,prepaid:0,currency:'RUB',ttTotal:0,ttOk:0,ttPartial:0,ttMiss:0,team:['А.Козлова / A.Kozlova','М.Иванов / M.Ivanov'],deadline:'01.10.25',launch:'05.10.25',urgent:false},
+  {id:'RD-040',brand:'Premiere',group:'C',name:'Gold Signature Corner',stage:7,daysLeft:14,budget:1200000,sample:180000,tiraж:1020000,prepaid:510000,currency:'USD',ttTotal:28,ttOk:0,ttPartial:0,ttMiss:0,team:['А.Козлова / A.Kozlova','В.Петров / V.Petrov','О.Сидорова / O.Sidorova','К.Белов / K.Belov'],deadline:'25.07.25',launch:'30.07.25',urgent:true},
+];
+const APPROVALS_DATA = [
+  {id:1,fromRu:'Команда Lumière',fromEn:'Lumière Team',roleRu:'Бренд',roleEn:'Brand',taskRu:'RD-041 — эскиз Serum Pro Display',taskEn:'RD-041 — Serum Pro Display sketch',typeRu:'Эскиз',typeEn:'Sketch',avatar:'LU',color:'#5b6af0'},
+  {id:2,fromRu:'И. Воронов',fromEn:'I. Voronov',roleRu:'Директор отдела',roleEn:'Dept. Director',taskRu:'RD-040 — КП подрядчика Gold Corner',taskEn:'RD-040 — Gold Corner contractor RFQ',typeRu:'КП',typeEn:'RFQ',avatar:'IV',color:'#f59e0b'},
+  {id:3,fromRu:'Ритейлер-команда',fromEn:'Retailer Team',roleRu:'Ритейлер',roleEn:'Retailer',taskRu:'RD-041 — размеры и материал',taskEn:'RD-041 — dimensions & material',typeRu:'Эскиз',typeEn:'Sketch',avatar:'RT',color:'#06d6a0'},
+  {id:4,fromRu:'Бухгалтерия',fromEn:'Accounting',roleRu:'Оплата',roleEn:'Payment',taskRu:'RD-039 — счёт финальной оплаты',taskEn:'RD-039 — final payment invoice',typeRu:'Счёт',typeEn:'Invoice',avatar:'AC',color:'#8b5cf6'},
+];
+const PAYMENTS = [
+  {id:'RD-041',brand:'Lumière',name:'Serum Pro Display',contractor:'Plastform LLC',kp:'45 000 ₽',sample:'45 000 ₽',tirazh:'275 000 ₽',prepaid:'137 500 ₽',balance:'137 500 ₽',currency:'RUB',kpDate:'12.05.25',statusRu:'Ожидает финала',statusEn:'Awaiting final'},
+  {id:'RD-040',brand:'Premiere',name:'Gold Signature Corner',contractor:'Eurostand GmbH',kp:'€12 400 (1 085 000 ₽)',sample:'€1 800 (157 500 ₽)',tirazh:'€10 600 (927 500 ₽)',prepaid:'€5 300 (463 750 ₽)',balance:'€5 300',currency:'EUR',kpDate:'28.04.25',statusRu:'Предоплата внесена',statusEn:'Prepaid'},
+  {id:'RD-039',brand:'Novalux',name:'Eye Collection Display',contractor:'Рекламник / Reklamnik',kp:'540 000 ₽',sample:'60 000 ₽',tirazh:'480 000 ₽',prepaid:'480 000 ₽',balance:'0 ₽',currency:'RUB',kpDate:'01.03.25',statusRu:'Оплачен полностью',statusEn:'Fully paid'},
+];
+const TT_DATA = [
+  {task:'RD-039',brand:'Novalux',name:'Eye Collection Display',ttTotal:63,ttOk:44,ttPartial:8,ttMiss:11,daysLeft:3},
+  {task:'RD-038',brand:'Botanica',name:'Herbal Collection Corner',ttTotal:87,ttOk:87,ttPartial:0,ttMiss:0,daysLeft:22},
+  {task:'RD-041',brand:'Lumière',name:'Serum Pro Display',ttTotal:42,ttOk:38,ttPartial:2,ttMiss:2,daysLeft:8},
+  {task:'RD-040',brand:'Premiere',name:'Gold Signature Corner',ttTotal:28,ttOk:0,ttPartial:0,ttMiss:0,daysLeft:14},
+];
+
+// ═══════════════════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════════════════
+const gc = g => g==='A'?'#5b6af0':g==='B'?'#06d6a0':'#f59e0b';
+const sc = s => s<=2?'stage-1':s<=4?'stage-2':s<=6?'stage-3':s<=8?'stage-4':s<=10?'stage-5':'stage-6';
+const l = () => T[lang];
+
+// ═══════════════════════════════════════════════════
+// RENDER: TASKS
+// ═══════════════════════════════════════════════════
+function renderTasks(filter='all') {
+  const list = document.getElementById('task-list');
+  let tasks = [...TASKS];
+  if(filter==='urgent') tasks = tasks.filter(t=>t.urgent);
+  if(filter==='approval') tasks = tasks.filter(t=>t.stage>=3&&t.stage<=6);
+  list.innerHTML = tasks.map(t=>{
+    const dots = Array.from({length:11},(_,i)=>i<t.stage-1?'done':i===t.stage-1?'active':'');
+    const pct = Math.round(t.stage/11*100);
+    const dlCls = t.daysLeft<=7?'urgent':t.daysLeft<=14?'warn':'';
+    const em = t.daysLeft<=7?'🔴':t.daysLeft<=14?'🟡':'🟢';
+    return `<div class="task-card" onclick="openTaskDetail('${t.id}')">
+      <div style="display:flex;align-items:flex-start;gap:9px;margin-bottom:8px">
+        <div class="task-brand-dot" style="background:${gc(t.group)}"></div>
+        <div style="flex:1;min-width:0">
+          <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap;margin-bottom:4px">
+            <div class="task-name">${t.name}</div>
+          </div>
+          <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap">
+            <span class="badge badge-gray">${t.id}</span>
+            <span style="font-size:10px;color:var(--text3)">${t.brand} · ${l().groupLabel}${t.group}</span>
+            <span class="task-stage ${sc(t.stage)}">${l().stages[t.stage-1]}</span>
+          </div>
+        </div>
+        <div class="task-deadline ${dlCls}">${em} ${t.daysLeft}d</div>
+      </div>
+      <div class="stage-pipeline">${dots.map(c=>`<div class="stage-dot ${c}"></div>`).join('')}</div>
+      <div class="progress-wrap">
+        <div class="progress-label"><span>${l().curStage} ${t.stage}/11</span><span>${pct}%</span></div>
+        <div class="progress-bar"><div class="progress-fill ${pct>70?'fill-green':pct>40?'fill-blue':'fill-amber'}" style="width:${pct}%"></div></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: APPROVALS MINI
+// ═══════════════════════════════════════════════════
+function renderApprovalsMini() {
+  document.getElementById('approval-list').innerHTML = APPROVALS_DATA.map(a=>`
+    <div class="approval-item">
+      <div class="approval-avatar" style="background:${a.color}22;color:${a.color}">${a.avatar}</div>
+      <div class="approval-info">
+        <div class="approval-name">${lang==='ru'?a.fromRu:a.fromEn}</div>
+        <div class="approval-task">${lang==='ru'?a.taskRu:a.taskEn}</div>
+      </div>
+      <div class="approval-actions">
+        <button class="btn-approve" onclick="approveItem(${a.id},this)">✓</button>
+        <button class="btn-reject">✗</button>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: BUDGET MINI
+// ═══════════════════════════════════════════════════
+function renderBudgetMini() {
+  document.getElementById('budget-mini').innerHTML = GROUPS.map(g=>{
+    const pct = Math.round(g.spent/g.budget*100);
+    const sample = Math.round(g.spent*.1), tirazh = Math.round(g.spent*.7), other = g.spent-sample-tirazh;
+    return `<div class="budget-group">
+      <div class="budget-group-header">
+        <div class="budget-group-dot" style="background:${g.color}"></div>
+        <div class="budget-group-name">${l().groupLabel} ${g.id}</div>
+        <div class="budget-group-total">${(g.spent/1e6).toFixed(1)}M / ${(g.budget/1e6).toFixed(0)}M ₽</div>
+      </div>
+      <div class="budget-bar-wrap">
+        <div class="budget-bar-seg" style="width:${sample/g.budget*100}%;background:${g.color}55"></div>
+        <div class="budget-bar-seg" style="width:${tirazh/g.budget*100}%;background:${g.color}"></div>
+        <div class="budget-bar-seg" style="width:${other/g.budget*100}%;background:${g.color}88"></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;font-size:9px;color:var(--text3)">
+        <span>${pct}% ${l().kpiSpent}</span><span>+${((g.budget-g.spent)/1e6).toFixed(1)}M</span>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: TT MINI
+// ═══════════════════════════════════════════════════
+function renderTTMini() {
+  const t = l();
+  document.getElementById('tt-mini').innerHTML = `<table class="tt-table">
+    <thead><tr>
+      <th>${t.colTask}</th><th>${t.colBrand}</th><th>${t.colTTTotal}</th>
+      <th>${t.colReceived}</th><th>${t.colPartial}</th><th>${t.colMissing}</th><th>${t.colProgress}</th>
+    </tr></thead><tbody>
+    ${TT_DATA.map(d=>{
+      const pct = Math.round(d.ttOk/Math.max(d.ttTotal,1)*100);
+      return `<tr>
+        <td><span class="badge badge-gray">${d.task}</span></td>
+        <td>${d.brand}</td><td>${d.ttTotal}</td>
+        <td><span class="tt-status tt-ok">✓ ${d.ttOk}</span></td>
+        <td><span class="tt-status tt-partial">~ ${d.ttPartial}</span></td>
+        <td><span class="tt-status ${d.ttMiss>0?'tt-missing':'tt-waiting'}">✗ ${d.ttMiss}</span></td>
+        <td style="min-width:90px">
+          <div class="progress-bar"><div class="progress-fill ${pct===100?'fill-green':pct>50?'fill-blue':'fill-amber'}" style="width:${pct}%"></div></div>
+          <div style="font-size:9px;color:var(--text3);margin-top:2px">${pct}%</div>
+        </td>
+      </tr>`;
+    }).join('')}
+    </tbody></table>`;
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: KANBAN
+// ═══════════════════════════════════════════════════
+function renderKanban() {
+  const t = l();
+  const cols = [
+    {title:t.devStage,stages:[1,2],color:'#5b6af0'},
+    {title:t.approvalStage,stages:[3,4,5,6],color:'#f59e0b'},
+    {title:t.productionStage,stages:[7,8],color:'#8b5cf6'},
+    {title:t.logisticsStage,stages:[9,10,11,12],color:'#06d6a0'},
+  ];
+  document.getElementById('kanban-board').innerHTML = cols.map(col=>{
+    const colTasks = TASKS.filter(x=>col.stages.includes(x.stage));
+    return `<div class="panel" style="min-width:250px">
+      <div class="panel-header">
+        <div style="width:8px;height:8px;border-radius:2px;background:${col.color}"></div>
+        <div class="panel-title">${col.title}</div>
+        <span class="panel-count">${colTasks.length}</span>
+      </div>
+      <div class="panel-body" style="display:flex;flex-direction:column;gap:8px;min-height:60px">
+        ${colTasks.length?colTasks.map(task=>`
+          <div class="task-card" onclick="openTaskDetail('${task.id}')">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:5px">
+              <div class="task-brand-dot" style="background:${gc(task.group)}"></div>
+              <span style="font-size:9px;color:var(--text3)">${task.id}</span>
+              <span class="task-deadline ${task.daysLeft<=7?'urgent':task.daysLeft<=14?'warn':''}" style="margin-left:auto">${task.daysLeft}d</span>
+            </div>
+            <div style="font-size:12px;font-weight:500;margin-bottom:5px">${task.name}</div>
+            <div style="font-size:10px;color:var(--text3)">${task.brand} · ${l().groupLabel}${task.group}</div>
+            <div style="margin-top:7px"><span class="task-stage ${sc(task.stage)}">${l().stages[task.stage-1]}</span></div>
+          </div>`).join(''):'<div style="color:var(--text3);font-size:11px;text-align:center;padding:16px 0">—</div>'}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: GANTT
+// ═══════════════════════════════════════════════════
+function renderGantt() {
+  const t = l();
+  const rows = TASKS.map(task=>{
+    const start = Math.max(0,Math.round(Math.random()*25));
+    const dur = Math.round(90-task.daysLeft-start);
+    const pct = Math.round(task.stage/11*100);
+    const col = task.stage>=8?'var(--accent3)':task.stage>=4?'var(--accent)':'var(--accent2)';
+    const todayPos = Math.round((1-(task.daysLeft/90))*100);
+    return `<div class="gantt-row">
+      <div class="gantt-label">${task.brand}<br><span style="font-size:9px;color:var(--text3)">${task.id}</span></div>
+      <div class="gantt-track">
+        <div class="gantt-bar" style="left:${start/90*100}%;width:${Math.max(5,dur/90*100)}%;background:${col}33;color:${col}">${l().stages[task.stage-1]}</div>
+        <div class="gantt-today" style="left:${todayPos}%"></div>
+      </div>
+      <div style="width:32px;text-align:right;font-size:9px;color:var(--text3);padding-left:6px">${pct}%</div>
+    </div>`;
+  }).join('');
+  document.getElementById('gantt-content').innerHTML = `
+    <div style="display:flex;margin-left:120px;margin-bottom:6px">
+      ${t.months.map(m=>`<div style="flex:1;font-size:9px;color:var(--text3);text-align:center">${m}</div>`).join('')}
+    </div>
+    ${rows}
+    <div style="margin-top:14px;display:flex;gap:14px;flex-wrap:wrap">
+      <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)"><div style="width:8px;height:8px;border-radius:2px;background:var(--accent2)"></div>${t.legend_dev}</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)"><div style="width:8px;height:8px;border-radius:2px;background:var(--accent)"></div>${t.legend_approval}</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)"><div style="width:8px;height:8px;border-radius:2px;background:var(--accent3)"></div>${t.legend_logistics}</div>
+      <div style="display:flex;align-items:center;gap:5px;font-size:10px;color:var(--text2)"><div style="width:2px;height:10px;border-radius:0;background:var(--danger)"></div>${t.legend_today}</div>
+    </div>`;
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: BUDGET DETAIL
+// ═══════════════════════════════════════════════════
+function renderBudgetDetail() {
+  const t = l();
+  document.getElementById('budget-detail').innerHTML = `<table class="tt-table">
+    <thead><tr>
+      <th>${t.colTask}</th><th>${t.colBrand}</th><th>${t.colGroup}</th>
+      <th>${t.colSample}</th><th>${t.colTirazh}</th><th>${t.colTotal}</th><th>${t.colPayStatus}</th>
+    </tr></thead><tbody>
+    ${TASKS.map(task=>`<tr>
+      <td><span class="badge badge-gray">${task.id}</span></td>
+      <td>${task.brand}</td>
+      <td><span class="badge" style="background:${gc(task.group)}22;color:${gc(task.group)}">${t.groupLabel}${task.group}</span></td>
+      <td>${task.sample?task.sample.toLocaleString()+'₽':'—'}</td>
+      <td>${task.tiraж?task.tiraж.toLocaleString()+'₽':'—'}</td>
+      <td><b>${task.budget?task.budget.toLocaleString()+'₽':'—'}</b></td>
+      <td>${task.prepaid===task.tiraж&&task.tiraж>0?`<span class="tt-status tt-ok">${t.fullPayment}</span>`:task.prepaid>0?`<span class="tt-status tt-partial">${t.prepayment}</span>`:`<span class="tt-status tt-waiting">${t.notPaid}</span>`}</td>
+    </tr>`).join('')}
+    </tbody></table>`;
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: PAYMENTS
+// ═══════════════════════════════════════════════════
+function renderPayments() {
+  const t = l();
+  document.getElementById('payments-content').innerHTML = `<table class="tt-table">
+    <thead><tr>
+      <th>${t.colTask}</th><th>${t.colBrand}</th><th>${t.colContractor}</th><th>${t.colKPDate}</th>
+      <th>${t.colSample}</th><th>${t.colTirazh}</th><th>${t.colPrepaid}</th><th>${t.colBalance}</th><th>${t.colStatus}</th>
+    </tr></thead><tbody>
+    ${PAYMENTS.map(p=>`<tr>
+      <td><span class="badge badge-gray">${p.id}</span></td>
+      <td>${p.brand}</td>
+      <td style="font-size:10px">${p.contractor}</td>
+      <td style="font-size:10px;color:var(--text3)">${p.kpDate}</td>
+      <td>${p.sample}</td><td>${p.tirazh}</td>
+      <td style="color:var(--accent3)">${p.prepaid}</td>
+      <td style="color:${p.balance==='0 ₽'?'var(--accent3)':'var(--warn)'}">${p.balance}</td>
+      <td><span class="badge ${(lang==='ru'?p.statusRu:p.statusEn).includes(lang==='ru'?'полностью':'paid')?'badge-green':(lang==='ru'?p.statusRu:p.statusEn).includes(lang==='ru'?'Предоплата':'Prepaid')?'badge-amber':'badge-blue'}">${lang==='ru'?p.statusRu:p.statusEn}</span></td>
+    </tr>`).join('')}
+    </tbody></table>`;
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: TT FULL
+// ═══════════════════════════════════════════════════
+function renderTTFull() {
+  const t = l();
+  let html = '';
+  TT_DATA.forEach(d=>{
+    const pct = Math.round(d.ttOk/Math.max(d.ttTotal,1)*100);
+    html += `<div style="margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:10px">
+        <span class="badge badge-gray">${d.task}</span>
+        <span style="font-size:13px;font-weight:500">${d.name}</span>
+        <span style="font-size:11px;color:var(--text2)">${d.brand}</span>
+        <span class="badge ${pct===100?'badge-green':pct>50?'badge-blue':'badge-amber'}" style="margin-left:auto">${pct}% ${t.confirmed}</span>
+      </div>
+      <div class="tt-stat-grid" style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:10px">
+        <div style="background:var(--surface2);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:600">${d.ttTotal}</div>
+          <div style="font-size:9px;color:var(--text3)">${t.ttTotal}</div>
+        </div>
+        <div style="background:rgba(6,214,160,.08);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:600;color:var(--accent3)">${d.ttOk}</div>
+          <div style="font-size:9px;color:var(--text3)">${t.ttOk} ✓</div>
+        </div>
+        <div style="background:rgba(245,158,11,.08);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:600;color:var(--warn)">${d.ttPartial}</div>
+          <div style="font-size:9px;color:var(--text3)">${t.ttPartial}</div>
+        </div>
+        <div style="background:rgba(239,68,68,.08);border-radius:8px;padding:10px;text-align:center">
+          <div style="font-size:18px;font-weight:600;color:var(--danger)">${d.ttMiss}</div>
+          <div style="font-size:9px;color:var(--text3)">${t.ttMiss} ✗</div>
+        </div>
+      </div>
+      <div class="progress-bar" style="height:5px">
+        <div class="progress-fill ${pct===100?'fill-green':pct>50?'fill-blue':'fill-amber'}" style="width:${pct}%"></div>
+      </div>
+    </div>
+    <hr style="border:none;border-top:1px solid var(--border);margin-bottom:20px">`;
+  });
+  document.getElementById('tt-full').innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: APPROVALS FULL
+// ═══════════════════════════════════════════════════
+function renderApprovalsFull() {
+  const t = l();
+  document.getElementById('approvals-full').innerHTML = APPROVALS_DATA.map(a=>`
+    <div class="approval-item" style="padding:14px 0">
+      <div class="approval-avatar" style="background:${a.color}22;color:${a.color};width:38px;height:38px;font-size:12px">${a.avatar}</div>
+      <div class="approval-info">
+        <div style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+          <div class="approval-name">${lang==='ru'?a.fromRu:a.fromEn}</div>
+          <span class="badge badge-blue">${lang==='ru'?a.typeRu:a.typeEn}</span>
+        </div>
+        <div class="approval-task">${lang==='ru'?a.taskRu:a.taskEn}</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px">${t.role}: ${lang==='ru'?a.roleRu:a.roleEn}</div>
+      </div>
+      <div class="approval-actions">
+        <button class="btn-approve" style="padding:5px 12px" onclick="approveItem(${a.id},this)">${t.approve}</button>
+        <button class="btn-reject" style="padding:5px 12px">${t.reject}</button>
+        <button class="btn btn-ghost" style="font-size:10px">${t.comment}</button>
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// RENDER: BRANDS
+// ═══════════════════════════════════════════════════
+function renderBrands() {
+  const t = l();
+  document.getElementById('brands-grid').innerHTML = GROUPS.map(g=>`
+    <div class="panel">
+      <div class="panel-header">
+        <div style="width:10px;height:10px;border-radius:3px;background:${g.color}"></div>
+        <div class="panel-title">${t.groupLabel} ${g.id}</div>
+        <span class="panel-count">${t.noBrands}</span>
+        <button class="btn btn-ghost" style="font-size:10px;margin-left:auto">${t.addBrand}</button>
+      </div>
+      <div class="panel-body" style="display:flex;flex-direction:column;gap:7px">
+        ${BRANDS.filter(b=>b.group===g.id).map(b=>{
+          const bTasks = TASKS.filter(x=>x.brand===b.name);
+          return `<div style="display:flex;align-items:center;gap:9px;padding:8px;background:var(--surface2);border-radius:8px">
+            <div style="width:30px;height:30px;border-radius:7px;background:${g.color}22;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:${g.color}">${b.name[0]}</div>
+            <div style="flex:1;min-width:0">
+              <div style="font-size:12px;font-weight:500">${b.name}</div>
+              <div style="font-size:10px;color:var(--text3)">${bTasks.length} ${t.activeTasks}</div>
+            </div>
+            ${bTasks.length?`<span class="badge badge-blue">${l().stages[bTasks[0].stage-1]}</span>`:`<span class="badge badge-gray">—</span>`}
+          </div>`;
+        }).join('')}
+      </div>
+    </div>`).join('');
+}
+
+// ═══════════════════════════════════════════════════
+// TASK DETAIL MODAL
+// ═══════════════════════════════════════════════════
+function openTaskDetail(id) {
+  const task = TASKS.find(x=>x.id===id);
+  if(!task) return;
+  const t = l();
+
+  document.getElementById('modal-task-title').textContent = task.name;
+  document.getElementById('modal-task-brand').textContent = `${lang==='ru'?'Бренд':'Brand'}: ${task.brand} · ${t.groupLabel} ${task.group} · #${task.id}`;
+
+  const stEl = document.getElementById('modal-stages');
+  stEl.innerHTML = t.stageShort.map((s,i)=>`
+    <div class="detail-stage ${i<task.stage-1?'done':i===task.stage-1?'active':''}">${i<task.stage-1?'✓ ':''}<br>${s}</div>`).join('');
+
+  document.getElementById('modal-detail-grid').innerHTML = `
+    <div class="detail-field"><div class="detail-field-label">${t.deadline}</div><div class="detail-field-value" style="color:${task.daysLeft<=7?'var(--danger)':task.daysLeft<=14?'var(--warn)':'var(--text)'}">${task.deadline} (${task.daysLeft}d)</div></div>
+    <div class="detail-field"><div class="detail-field-label">${t.launch}</div><div class="detail-field-value">${task.launch}</div></div>
+    <div class="detail-field"><div class="detail-field-label">${t.curStage}</div><div class="detail-field-value"><span class="task-stage ${sc(task.stage)}">${l().stages[task.stage-1]}</span></div></div>
+    <div class="detail-field"><div class="detail-field-label">${t.readiness}</div><div class="detail-field-value">${Math.round(task.stage/11*100)}%</div></div>
+    <div class="detail-field"><div class="detail-field-label">${t.ttOkOf}</div><div class="detail-field-value" style="color:var(--accent3)">${task.ttOk} / ${task.ttTotal}</div></div>
+    <div class="detail-field"><div class="detail-field-label">${t.ttIssues}</div><div class="detail-field-value" style="color:var(--danger)">${task.ttPartial+task.ttMiss} ${t.issues}</div></div>`;
+
+  const teamColors = ['#5b6af0','#06d6a0','#f59e0b','#8b5cf6','#ef4444'];
+  document.getElementById('modal-team').innerHTML = task.team.map((m,i)=>`
+    <div class="team-chip"><div class="chip-dot" style="background:${teamColors[i%teamColors.length]}"></div>${m}</div>`).join('');
+
+  document.getElementById('modal-finance').innerHTML = `
+    <div class="fin-row"><span class="fin-label">${t.sampleCost}</span><span class="fin-val">${task.sample?task.sample.toLocaleString()+'₽':'—'}</span></div>
+    <div class="fin-row"><span class="fin-label">${t.tirazh}</span><span class="fin-val">${task.tiraж?task.tiraж.toLocaleString()+'₽':'—'}</span></div>
+    <div class="fin-row"><span class="fin-label">${t.totalBudget}</span><span class="fin-val">${task.budget?task.budget.toLocaleString()+'₽':'—'}</span></div>
+    <div class="fin-row"><span class="fin-label">${t.prepaidPaid}</span><span class="fin-val green">${task.prepaid?task.prepaid.toLocaleString()+'₽':'—'}</span></div>
+    <div class="fin-row"><span class="fin-label">${t.balance}</span><span class="fin-val ${task.tiraж-task.prepaid>0?'amber':'green'}">${task.tiraж-task.prepaid>0?(task.tiraж-task.prepaid).toLocaleString()+'₽':t.paidFull}</span></div>
+    <div class="fin-row"><span class="fin-label">${t.currency}</span><span class="fin-val mono">${task.currency}</span></div>`;
+
+  document.getElementById('modal-docs').innerHTML = [
+    {key:'docTZ',icon:'📄'},{key:'docKP',icon:'📑'},{key:'docSketch',icon:'🖼'},{key:'doc3D',icon:'📦'},{key:'docYandex',icon:'☁'}
+  ].map(d=>`<div style="display:flex;align-items:center;gap:6px;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:6px 11px;font-size:11px;cursor:pointer;">${d.icon} ${t[d.key]}</div>`).join('');
+
+  document.getElementById('modal-task').classList.add('open');
+}
+
+// ═══════════════════════════════════════════════════
+// NAVIGATION
+// ═══════════════════════════════════════════════════
+function switchView(name, navEl) {
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  if(navEl) navEl.classList.add('active');
+  document.getElementById('page-title').textContent = l().viewTitles[name]||name;
+  closeSidebar();
+  if(name==='pipeline') renderKanban();
+  else if(name==='gantt') renderGantt();
+  else if(name==='budget') renderBudgetDetail();
+  else if(name==='payments') renderPayments();
+  else if(name==='tt') renderTTFull();
+  else if(name==='approvals') renderApprovalsFull();
+  else if(name==='brands') renderBrands();
+}
+
+function setBottomNav(id) {
+  document.querySelectorAll('.bnav-item').forEach(b=>b.classList.remove('active'));
+  const el = document.getElementById('bnav-'+id);
+  if(el) el.classList.add('active');
+}
+
+function filterTasks(f, el) {
+  document.querySelectorAll('.ptab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  renderTasks(f);
+}
+
+function openSidebar() {
+  document.getElementById('sidebar').classList.add('open');
+  document.getElementById('sidebar-overlay').classList.add('open');
+}
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  document.getElementById('sidebar-overlay').classList.remove('open');
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openNewTask() { openModal('modal-newtask'); }
+
+function approveItem(id, btn) {
+  const item = btn.closest('.approval-item');
+  if(item) { item.style.opacity='.35'; item.style.pointerEvents='none'; }
+}
+
+function submitNewTask() {
+  closeModal('modal-newtask');
+  alert(l().alertCreated);
+}
+
+document.querySelectorAll('.modal-overlay').forEach(o=>{
+  o.addEventListener('click', e=>{ if(e.target===o) o.classList.remove('open'); });
+});
+
+// ═══════════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', ()=>{
+  renderTasks();
+  renderApprovalsMini();
+  renderBudgetMini();
+  renderTTMini();
+  applyTranslations();
+});
+</script>
+</body>
+</html>
